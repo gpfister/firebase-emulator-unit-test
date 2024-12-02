@@ -30,6 +30,7 @@ export class GPFirebaseEmulatorAdminTestApp {
     private _authEmulatorHostConfig?: GPFirebaseEmulatorHostConfig;
     private _firestoreEmulatorHostConfig?: GPFirebaseEmulatorHostConfig;
     private _storageEmulatorHostConfig?: GPFirebaseEmulatorHostConfig;
+    private _pubsubEmulatorHostConfig?: GPFirebaseEmulatorHostConfig;
 
     private firebaseApp?: admin.app.App;
 
@@ -55,6 +56,7 @@ export class GPFirebaseEmulatorAdminTestApp {
             this._firestoreEmulatorHostConfig = emulatorConfig.firestoreEmulatorHostConfig;
             // this.functionsEmulatorHostConfig = emulatorConfig.functionsEmulatorHostConfig;
             this._storageEmulatorHostConfig = emulatorConfig.storageEmulatorHostConfig;
+            this._pubsubEmulatorHostConfig = emulatorConfig.pubsubEmulatorHostConfig;
 
             if (this._authEmulatorHostConfig || this._firestoreEmulatorHostConfig || this._storageEmulatorHostConfig) {
                 process.env.GCLOUD_PROJECT = this._projectId;
@@ -68,6 +70,10 @@ export class GPFirebaseEmulatorAdminTestApp {
 
                 if (this._storageEmulatorHostConfig) {
                     process.env.FIREBASE_STORAGE_EMULATOR_HOST = `${this._storageEmulatorHostConfig.hostname}:${this._storageEmulatorHostConfig.port}`;
+                }
+
+                if (this._pubsubEmulatorHostConfig) {
+                    process.env.FIREBASE_PUBSUB_EMULATOR_HOST = `${this._pubsubEmulatorHostConfig.hostname}:${this._pubsubEmulatorHostConfig.port}`;
                 }
 
                 this.firebaseApp = admin.initializeApp({ projectId: this._projectId, storageBucket: this._storageBucket }, 'app-' + new Date().getTime() + '-' + Math.random());

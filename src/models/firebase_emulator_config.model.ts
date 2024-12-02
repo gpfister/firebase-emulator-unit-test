@@ -26,6 +26,7 @@ export class GPFirebaseEmulatorConfig {
     _firestoreEmulatorHostConfig?: GPFirebaseEmulatorHostConfig;
     _functionsEmulatorHostConfig?: GPFirebaseEmulatorHostConfig;
     _storageEmulatorHostConfig?: GPFirebaseEmulatorHostConfig;
+    _pubsubEmulatorHostConfig?: GPFirebaseEmulatorHostConfig;
 
     /**
      * Class constructor using provided config for each emulator components
@@ -33,12 +34,20 @@ export class GPFirebaseEmulatorConfig {
      * @param firestoreEmulatorConfig The Cloud Firestore emulator config
      * @param functionsEmulatorConfig The Cloud Functions emulator config
      * @param storageEmulatorConfig The Cloud Storage emulator config
+     * @param pubsubEmulatorConfig The Cloud PubSub emulator config
      */
-    private constructor(authEmulatorConfig?: GPFirebaseEmulatorHostConfig, firestoreEmulatorConfig?: GPFirebaseEmulatorHostConfig, functionsEmulatorConfig?: GPFirebaseEmulatorHostConfig, storageEmulatorConfig?: GPFirebaseEmulatorHostConfig) {
+    private constructor(
+        authEmulatorConfig?: GPFirebaseEmulatorHostConfig,
+        firestoreEmulatorConfig?: GPFirebaseEmulatorHostConfig,
+        functionsEmulatorConfig?: GPFirebaseEmulatorHostConfig,
+        storageEmulatorConfig?: GPFirebaseEmulatorHostConfig,
+        pubsubEmulatorConfig?: GPFirebaseEmulatorHostConfig
+    ) {
         this._authEmulatorHostConfig = authEmulatorConfig;
         this._firestoreEmulatorHostConfig = firestoreEmulatorConfig;
         this._functionsEmulatorHostConfig = functionsEmulatorConfig;
         this._storageEmulatorHostConfig = storageEmulatorConfig;
+        this._pubsubEmulatorHostConfig = pubsubEmulatorConfig;
     }
 
     /**
@@ -47,8 +56,8 @@ export class GPFirebaseEmulatorConfig {
      * @param hubHostname The Hub hostname (default: localhost)
      * @param hubPort The Hub port (default: 4400)
      * @returns The Firabase emulator config for each activated components
-     *          (limitted to Auth, Cloud Firestore, Cloud Functions and Cloud
-     *          Storage)
+     *          (limitted to Auth, Cloud Firestore, Cloud Functions, Cloud
+     *          Storage, and Cloud PubSub)
      */
     public static async fromHubApi(hubHostname?: string, hubPort?: number) {
         const intHubHostname = hubHostname || 'localhost';
@@ -61,7 +70,8 @@ export class GPFirebaseEmulatorConfig {
             emulatorConfig.auth ? { hostname: emulatorConfig.auth.host || 'localhost', port: emulatorConfig.auth.port || 9099 } : undefined,
             emulatorConfig.firestore ? { hostname: emulatorConfig.firestore.host || 'localhost', port: emulatorConfig.firestore.port || 8080 } : undefined,
             emulatorConfig.functions ? { hostname: emulatorConfig.functions.host || 'localhost', port: emulatorConfig.functions.port || 5001 } : undefined,
-            emulatorConfig.storage ? { hostname: emulatorConfig.storage.host || 'localhost', port: emulatorConfig.storage.port || 9199 } : undefined
+            emulatorConfig.storage ? { hostname: emulatorConfig.storage.host || 'localhost', port: emulatorConfig.storage.port || 9199 } : undefined,
+            emulatorConfig.pubsub ? { hostname: emulatorConfig.pubsub.host || 'localhost', port: emulatorConfig.pubsub.port || 9299 } : undefined
         );
     }
 
@@ -91,5 +101,12 @@ export class GPFirebaseEmulatorConfig {
      */
     public get storageEmulatorHostConfig() {
         return this._storageEmulatorHostConfig;
+    }
+
+    /**
+     * Return the configuration of the Cloud PubSub emulator
+     */
+    public get pubsubEmulatorHostConfig() {
+        return this._pubsubEmulatorHostConfig;
     }
 }
